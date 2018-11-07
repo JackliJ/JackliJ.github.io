@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.2.0" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.2.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="如何开发一款即时通讯APP  上一期讲到了基础的网络原理和安装基础的开发环境，在这一期中，则主要是对APP的需求设计做一个简单的概述，APP讲述的需求模式，满足于基础的聊天设计，其中的一些UI设计，统归于个人解释，请勿擅自抄袭，该博客旨在帮助建立理解即时通讯软件的基础设计  前文  即时通讯社交APP,其设计的初衷是为了方便社交，所以一个简洁的界面设计是必须的，当然其大方符合逻辑操作的流程也是必">
+<meta name="keywords" content="随笔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何开发一款即时通讯APP-第二期">
+<meta property="og:url" content="http://yoursite.com/2018/05/30/如何开发一款即时通讯APP-第二期/index.html">
+<meta property="og:site_name" content="Whale fall的博客">
+<meta property="og:description" content="如何开发一款即时通讯APP  上一期讲到了基础的网络原理和安装基础的开发环境，在这一期中，则主要是对APP的需求设计做一个简单的概述，APP讲述的需求模式，满足于基础的聊天设计，其中的一些UI设计，统归于个人解释，请勿擅自抄袭，该博客旨在帮助建立理解即时通讯软件的基础设计  前文  即时通讯社交APP,其设计的初衷是为了方便社交，所以一个简洁的界面设计是必须的，当然其大方符合逻辑操作的流程也是必">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://github.com/JackliJ/JackImage/blob/master/2018530142235.png?raw=true">
+<meta property="og:image" content="https://github.com/JackliJ/JackImage/blob/master/2018530142251.png?raw=true">
+<meta property="og:image" content="https://github.com/JackliJ/JackImage/blob/master/2018530142313.png?raw=true">
+<meta property="og:image" content="https://github.com/JackliJ/JackImage/blob/master/2018530142355.png?raw=true">
+<meta property="og:image" content="https://github.com/JackliJ/JackImage/blob/master/2018530142410.png?raw=true">
+<meta property="og:image" content="https://github.com/JackliJ/JackImage/blob/master/2018530142422.png?raw=true">
+<meta property="og:image" content="https://github.com/JackliJ/JackImage/blob/master/2018530142433.png?raw=true">
+<meta property="og:updated_time" content="2018-05-30T07:09:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何开发一款即时通讯APP-第二期">
+<meta name="twitter:description" content="如何开发一款即时通讯APP  上一期讲到了基础的网络原理和安装基础的开发环境，在这一期中，则主要是对APP的需求设计做一个简单的概述，APP讲述的需求模式，满足于基础的聊天设计，其中的一些UI设计，统归于个人解释，请勿擅自抄袭，该博客旨在帮助建立理解即时通讯软件的基础设计  前文  即时通讯社交APP,其设计的初衷是为了方便社交，所以一个简洁的界面设计是必须的，当然其大方符合逻辑操作的流程也是必">
+<meta name="twitter:image" content="https://github.com/JackliJ/JackImage/blob/master/2018530142235.png?raw=true">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Whale fall的博客" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/30/如何开发一款即时通讯APP-第二期/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>如何开发一款即时通讯APP-第二期 | Whale fall的博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Whale fall的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Whale fall的博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/30/如何开发一款即时通讯APP-第二期/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="JackLi">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://img.sccnn.com/bimg/338/43667.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Whale fall的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何开发一款即时通讯APP-第二期
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-05-30 14:18:07 / 修改时间：15:09:00" itemprop="dateCreated datePublished" datetime="2018-05-30T14:18:07+08:00">2018-05-30</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/开发随笔/" itemprop="url" rel="index"><span itemprop="name">开发随笔</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>如何开发一款即时通讯APP</p>
+</blockquote>
+<p>上一期讲到了基础的网络原理和安装基础的开发环境，在这一期中，则主要是对APP的需求设计做一个简单的概述，APP讲述的需求模式，满足于基础的聊天设计，其中的一些UI设计，统归于个人解释，请勿擅自抄袭，该博客旨在帮助建立理解即时通讯软件的基础设计</p>
+<blockquote>
+<p>前文</p>
+</blockquote>
+<p>即时通讯社交APP,其设计的初衷是为了方便社交，所以一个简洁的界面设计是必须的，当然其大方符合逻辑操作的流程也是必要的，这里对界面流程进行简单的介绍。</p>
+<blockquote>
+<p>需求定义和主要功能介绍</p>
+</blockquote>
+<p>应用初始界面为登录界面，包含账户输入框和密码输入框，账户框输入的字段限制为11位的手机号码，并需要使用正则表达式进行验证，在初次登录完成后，保存当前登录的用户名称，在下次退出登录，或者被迫下线情况下显示。在用户输入账户完成的时候，如果当前用户存在，需要在用户框显示用户的头像。密码输入框对长度限制为二十位，特殊符号不可以输入，首字母必须大写，必须包含数字，大写字母，小写字母三种元素，并且在用户输入一个字符后的0.5秒自动变为*号。以用于掩盖用户的密码，防止窥视。登录页面不需要验证，其密码验证放到注册界面，点击登录按钮时应验证输入框是否为空，并给出适当的提示语。验证密码成功后，进入聊天主页。</p>
+<p><img width="47%" height="30%" src="https://github.com/JackliJ/JackImage/blob/master/2018530142235.png?raw=true">   <img width="49%" height="30%" src="https://github.com/JackliJ/JackImage/blob/master/2018530142251.png?raw=true"></p>
+<p>注册页面，通过登录页面右上角的登录按钮进入，注册页面的右上角同样设计有登录按钮，用户可以通过点击返回登录页面。注册页面包含4个输入框，用户需要填写昵称，密码，手机号码，和手机号码的验证码。昵称用作后面聊天的昵称，最多为10位字符，不可以为空，密码则遵照登录简介的长度限制为二十位，特殊符号不可以输入，首字母必须大写，必须包含数字，大写字母，小写字母三种元素。在这里需要对输入密码的规范做出验证，并在用户输入不规范的情况下酌情提示用户进行修改。同样的手机号码的输入也需要进行验证，当验证通过后才能进行获取验证码的操作。</p>
+<p>注册时候发出的验证码有效时间为五分钟，每一分钟最多发送一次，不可以重复进行点击发送。点击完成注册的时候，验证用户输入的验证码 是否正确，以及验证验证码是 否超时。当用户验证码输入正确，则提示用户注册成功，跳转到登录页面，自动填充账户名和密码输入框并进行自动登录，登录完成后进入主页面。<br>主页设计了三个大的模块，分别为收取回复消息模块，通讯录人脉 朋友模块，和群组交流模块。<br>收取回复消息模块又包括小秘书(机器客服系统)，脉 友 圈(心情发布和文章转发等)，系统消息（由后端发送的推送消息，系统级别的透 传 消息等，如群主群成员进群批复等），聊天信息列表（用户与用户的聊天列表）。</p>
+<p>点击小秘书，进入机器人客服 咨询聊天界面，用户可以通过该功能咨询APP的使用须知，方式方法，注意事项等相关信息。</p>
+<p>点击 脉 友 圈，进入心情文章展示列表，心情文章由用户的朋友通过自编辑进行发送，用户可以进行 点 赞 转发等操作，发送心情或者文章的时候可以插入图片并进行排版。也可以定位当前的位置并进行发送。<br>点击系统消息，可以看到由后端发送的推送信息，通常为文本方式，也可以是文章推荐，新闻等方式进行展示。如果当前用户是创建过群组，作为群主，也可以在这里处理入群申请，接受 退 群 提示等相关信息。<br>系统消息下面为用户的聊天列表，包含用户的头像，昵称，当前聊天信息的最后一条信息的展示，未读消息数量等。未读消息数量最多为99条，超过99条的未读消息数量显示为99+，当用户右滑单个消息模块的时候，显示删除按钮，当用户点击删除按钮的时候，确认是否删除，若再次点击，则删除当前的聊天，并清理聊天记录。</p>
+<p><img src="https://github.com/JackliJ/JackImage/blob/master/2018530142313.png?raw=true" alt="enter image description here"><img src="https://github.com/JackliJ/JackImage/blob/master/2018530142355.png?raw=true" alt="enter image description here"></p>
+<p>朋友模块用于展示用户的好友，包含的元素和消息模块一致，但是需要区分的是，灰色信息部分改为了用户的简介，当用户点击朋友的头像则进入用户的简介页面，即个人中心，在朋友模块加入了筛选和收缩功能，顶部的搜索输入框通过用户名或者电话号码进行单个用户的搜索，旁边的筛选条则通过首字母进行定位，当用户滑动字幕条到某个字母位置的时候，则数据列表定位到摸个字母列表，这里需要理解的是，好友数据是按照昵称首字母进行排序的。<br><img width="30%" height="30%" src="https://github.com/JackliJ/JackImage/blob/master/2018530142410.png?raw=true">   <img width="30%" height="30%" src="https://github.com/JackliJ/JackImage/blob/master/2018530142422.png?raw=true"><img width="30%" height="30%" src="https://github.com/JackliJ/JackImage/blob/master/2018530142433.png?raw=true"></p>
+<p>群组模块为用户创建或者用户加入的时候进行显示，显示为用户加入或者创建的群组的名称，如果该群为用户创建的，则需要显示群主标识。同时，群组的头像为群主本身在注册的时候进行选择的，在创建群组后，可以在群资料编辑界面进行修改。同时在编辑页面也可以进行群组类别，群组公告，等信息的更改。<br>最为关键的模块，则是聊天信息模块。聊天信息模块可以通过点击通讯录的好友列表单项进入聊天界面，在用户发送了一条消息的时候，则在消息列表创建信息体，并保存用户的聊天消息记录，如果用户没有发送消息，则点击返回的时候，在消息模块是默认不创建聊天信息列表的。群组的规则则遵照朋友的点击方式，在这里我们将由朋友点击进入的一对一聊天称之为单聊，由群组点击进入的一对多聊天称之为群聊，并且在下文中使用该种描述，并不在多做说明。</p>
+<p>单聊模块顶部包含返回按钮，在设计中，在整个屏幕的靠近左侧区域向右滑动也是可以实现返回动作的，主要是为了方便快捷聊天的设计。其设计的灵感来源于苹果公司的IOS系统的交互模式。顶部除了返回还包含有当前与之聊天互动的用户的昵称和其个人资料的点击按钮。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/随笔/" rel="tag"># 随笔</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/30/如何开发一款即时通讯APP-第一期/" rel="next" title="如何开发一款即时通讯APP(第一期)">
+                <i class="fa fa-chevron-left"></i> 如何开发一款即时通讯APP(第一期)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/14/如何优化Android瀑布流/" rel="prev" title="如何优化Android瀑布流">
+                如何优化Android瀑布流 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="http://img.sccnn.com/bimg/338/43667.jpg" alt="JackLi">
+            
+              <p class="site-author-name" itemprop="name">JackLi</p>
+              <p class="site-description motion-element" itemprop="description">随便写写 随便聊聊</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">标签</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JackLi</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Pisces</a> v6.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.2.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.2.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.2.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.2.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.2.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.2.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.2.0"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
