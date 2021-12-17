@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="如何优化Android瀑布流 前言     随着APP设计的优化，瀑布流布局方式深受各大平台的喜爱。其大图的展示方式和引发好奇心的下滑模式，是其设计的优点。但是APP大量的图片展示，在Android端势必会影响到滑动的流畅和APP的体验，如何优化图片加载和滑动成为开发瀑布流的重中之重，最近遇到了这块的问题，所有在此做个记录，与君共勉。  开发的流程是什么样的？     在Android端做瀑布流，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何优化Android瀑布流">
+<meta property="og:url" content="http://example.com/2018/06/14/%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96Android%E7%80%91%E5%B8%83%E6%B5%81/index.html">
+<meta property="og:site_name" content="Welcome to Au Blog">
+<meta property="og:description" content="如何优化Android瀑布流 前言     随着APP设计的优化，瀑布流布局方式深受各大平台的喜爱。其大图的展示方式和引发好奇心的下滑模式，是其设计的优点。但是APP大量的图片展示，在Android端势必会影响到滑动的流畅和APP的体验，如何优化图片加载和滑动成为开发瀑布流的重中之重，最近遇到了这块的问题，所有在此做个记录，与君共勉。  开发的流程是什么样的？     在Android端做瀑布流，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://github.com/JackliJ/JackImage/blob/master/2018614163546.png?raw=true">
+<meta property="og:image" content="https://github.com/JackliJ/JackImage/blob/master/2018%E5%B9%B4614163608.png?raw=true">
+<meta property="og:image" content="https://github.com/JackliJ/JackImage/blob/master/2018%E5%B9%B4614163618.png?raw=true">
+<meta property="og:image" content="https://github.com/JackliJ/JackImage/blob/master/2018614165552.gif?raw=true">
+<meta property="article:published_time" content="2018-06-14T07:28:41.000Z">
+<meta property="article:modified_time" content="2018-06-14T09:25:54.000Z">
+<meta property="article:author" content="Jack Li">
+<meta property="article:tag" content="随笔">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/JackliJ/JackImage/blob/master/2018614163546.png?raw=true">
+
+<link rel="canonical" href="http://example.com/2018/06/14/%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96Android%E7%80%91%E5%B8%83%E6%B5%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>如何优化Android瀑布流 | Welcome to Au Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Welcome to Au Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Don&apos;t debug standing up. It cuts your patience m half, and you need all you can muster.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2018/06/14/%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96Android%E7%80%91%E5%B8%83%E6%B5%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jack Li">
+      <meta itemprop="description" content="You still need to have a dream. What if it came true?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Au Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何优化Android瀑布流
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2018-06-14 15:28:41 / 修改时间：17:25:54" itemprop="dateCreated datePublished" datetime="2018-06-14T15:28:41+08:00">2018-06-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">开发随笔</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="如何优化Android瀑布流"><a href="#如何优化Android瀑布流" class="headerlink" title="如何优化Android瀑布流"></a>如何优化Android瀑布流</h1><blockquote>
+<p>前言</p>
+</blockquote>
+<p>   随着APP设计的优化，瀑布流布局方式深受各大平台的喜爱。其大图的展示方式和引发好奇心的下滑模式，是其设计的优点。但是APP大量的图片展示，在Android端势必会影响到滑动的流畅和APP的体验，如何优化图片加载和滑动成为开发瀑布流的重中之重，最近遇到了这块的问题，所有在此做个记录，与君共勉。</p>
+<blockquote>
+<p>开发的流程是什么样的？</p>
+</blockquote>
+<p>   在Android端做瀑布流，首选的当然就是RecyclerView了，其具体的用法这里就不做介绍了，网上有很多，我们主要讨论一下图片是如何裁剪和优化的。<br>   要对图片进行裁剪，我们要获取到图片的Width和height。在Android获取长宽，bitmap是逃不掉。而总所周知的是，bitmap是一个耗费内存的大户，如果我们在主线程内大量的使用bitmap而不做好管理的话，很可能影响APP的流畅度，甚至导致崩溃的发生。<br>   那我们应该如何去设计和优化？这里有两个想法分享一下。</p>
+<ol>
+<li>在上传图片的时候，在服务端保存宽高</li>
+<li>在本地进行获取，再展示</li>
+</ol>
+<p>在服务端存取方式较为简单，接口获取，直接动态设置，不做描述，而客户端去解析的情况会比较多，大部分公司的瀑布流都是后期上的，前期的图片是没有宽高数据的，让后端去改并不现实，所以这里大体讨论一下Android端的实现方式。<br>我是这样设计的：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">st=&gt;start: 服务端传递图片URL</span><br><span class="line">op=&gt;operation: 下载图片获取宽高</span><br><span class="line">cond=&gt;operation: 赋值给数据源</span><br><span class="line">e=&gt;end</span><br><span class="line"></span><br><span class="line">st-&gt;op-&gt;cond </span><br></pre></td></tr></table></figure>
+
+<p>在获取到数据的时候，将数据存储到Data。 在setAdapter之前，也就是请求成功，数据已经保存为内存地址的data时，将数据给一个服务(Service)，由服务去先行处理图片，获取宽高。然后Adapter中的Item布局ImageView，去进行重新，在绘制组件之前设置宽高比。我们先看一下DataService的核心代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> android.app.IntentService;</span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.content.Intent;</span><br><span class="line"><span class="keyword">import</span> android.graphics.Bitmap;</span><br><span class="line"><span class="keyword">import</span> android.os.Parcelable;</span><br><span class="line"><span class="keyword">import</span> com.android.maiguo.activity.home.newhome.model.Found;</span><br><span class="line"><span class="keyword">import</span> com.bumptech.glide.Glide;</span><br><span class="line"><span class="keyword">import</span> com.bumptech.glide.request.target.Target;</span><br><span class="line"><span class="keyword">import</span> org.greenrobot.eventbus.EventBus;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutionException;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用于处理图片的Service</span></span><br><span class="line"><span class="comment"> * Create by www.lijin@foxmail.com on 2018/6/11 0011.</span></span><br><span class="line"><span class="comment"> * &lt;br/&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DataService</span> <span class="keyword">extends</span> <span class="title">IntentService</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">DataService</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(<span class="string">&quot;&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">startService</span><span class="params">(Context context, List&lt;Found&gt; datas, String subtype)</span> </span>&#123;</span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(context, DataService.class);</span><br><span class="line">        intent.putParcelableArrayListExtra(<span class="string">&quot;data&quot;</span>, (ArrayList&lt;? extends Parcelable&gt;) datas);</span><br><span class="line">        intent.putExtra(<span class="string">&quot;subtype&quot;</span>, subtype);</span><br><span class="line">        context.startService(intent);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onHandleIntent</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (intent == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        List&lt;Found&gt; mData = intent.getParcelableArrayListExtra(<span class="string">&quot;data&quot;</span>);</span><br><span class="line">        String subtype = intent.getStringExtra(<span class="string">&quot;subtype&quot;</span>);</span><br><span class="line">        handleGirlItemData(mData, subtype);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Bitmap bitmap = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">handleGirlItemData</span><span class="params">(List&lt;Found&gt; mData, String subtype)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (mData.size() == <span class="number">0</span>) &#123;</span><br><span class="line">            EventBus.getDefault().post(<span class="string">&quot;finish&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Found data : mData) &#123;</span><br><span class="line">            <span class="comment">//获取BitMap</span></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                bitmap = Glide.with(<span class="keyword">this</span>)</span><br><span class="line">                        .asBitmap()</span><br><span class="line">                        .load(data.getImgurl())</span><br><span class="line">                        .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)</span><br><span class="line">                        .get();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//将宽高设置到实体去</span></span><br><span class="line">            <span class="keyword">if</span> (bitmap != <span class="keyword">null</span>) &#123;</span><br><span class="line">                data.setWidth(bitmap.getWidth());</span><br><span class="line">                data.setHeight(bitmap.getHeight());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            data.setSubtype(subtype);</span><br><span class="line">        &#125;</span><br><span class="line">        EventBus.getDefault().post(mData);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动服务，将图片的链接给Glide。这里要注意Glide的缓存模式应该设置为DiskCacheStrategy.ALL  让Glide既缓存全尺寸图片，下次在任何ImageView中加载图片的时候，全尺寸的图片将从缓存中取出，重新调整大小，然后缓存。获取的宽高保存到data中。注意,这里是循环获取的，在这之前，页面是还没有开始加载数据的，应该展示加载按钮。等服务跑完，即时关闭。通过返回的接口，去加载数据。这样，在家数据的时候，只要对Imageview直接赋值就好，不用在额外的去考虑宽高比了，再设置之前，这个就已经初始化好了，我们接着看一下重写的Imageview </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.util.AttributeSet;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 重写的ImageView</span></span><br><span class="line"><span class="comment"> * Create by www.lijin@foxmail.com on 2018/6/11 0011.</span></span><br><span class="line"><span class="comment"> * &lt;br/&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ScaleImageView</span> <span class="keyword">extends</span> <span class="title">android</span>.<span class="title">support</span>.<span class="title">v7</span>.<span class="title">widget</span>.<span class="title">AppCompatImageView</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> initWidth;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> initHeight;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ScaleImageView</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(context, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ScaleImageView</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setInitSize</span><span class="params">(<span class="keyword">int</span> initWidth, <span class="keyword">int</span> initHeight)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.initWidth = initWidth;</span><br><span class="line">        <span class="keyword">this</span>.initHeight = initHeight;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (initWidth &gt; <span class="number">0</span> &amp;&amp; initHeight &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> width = MeasureSpec.getSize(widthMeasureSpec);</span><br><span class="line">            <span class="keyword">int</span> height = MeasureSpec.getSize(heightMeasureSpec);</span><br><span class="line">            <span class="comment">//计算比例</span></span><br><span class="line">            <span class="keyword">float</span> scale = (<span class="keyword">float</span>) initHeight / (<span class="keyword">float</span>) initWidth;</span><br><span class="line">            <span class="keyword">if</span> (width &gt; <span class="number">0</span>)&#123;</span><br><span class="line">                height = (<span class="keyword">int</span>) ((<span class="keyword">float</span>)width * scale);</span><br><span class="line">            &#125;</span><br><span class="line">            setMeasuredDimension(width, height);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">super</span>.onMeasure(widthMeasureSpec, heightMeasureSpec);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在Adapter中 布局高设置为包裹wrap_content，使用setInitSize设置宽高，再去加载图片</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.android.maiguo.activity.R;</span><br><span class="line"><span class="keyword">import</span> com.android.maiguo.activity.base.MaiGuoErApplication;</span><br><span class="line"><span class="keyword">import</span> com.android.maiguo.activity.home.newhome.model.Found;</span><br><span class="line"><span class="keyword">import</span> com.android.maiguo.activity.home.newhome.weight.ScaleImageView;</span><br><span class="line"><span class="keyword">import</span> com.bumptech.glide.Glide;</span><br><span class="line"><span class="keyword">import</span> com.chad.library.adapter.base.BaseQuickAdapter;</span><br><span class="line"><span class="keyword">import</span> com.chad.library.adapter.base.BaseViewHolder;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 瀑布流adapter</span></span><br><span class="line"><span class="comment"> * Create by www.lijin@foxmail.com on 2018/6/11 0011.</span></span><br><span class="line"><span class="comment"> * &lt;br/&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FoundHomeListAdapter</span> <span class="keyword">extends</span> <span class="title">BaseQuickAdapter</span>&lt;<span class="title">Found</span>, <span class="title">BaseViewHolder</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">FoundHomeListAdapter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(R.layout.found_main_adapter);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">convert</span><span class="params">(BaseViewHolder helper, Found item)</span> </span>&#123;</span><br><span class="line">        ScaleImageView imageView = helper.getView(R.id.girl_item_iv);</span><br><span class="line">        imageView.setInitSize(item.getWidth(), item.getHeight());</span><br><span class="line">        <span class="comment">//加载图片</span></span><br><span class="line">        Glide.with(MaiGuoErApplication.getInstance().getApplicationContext()).load(item.getImgurl()).into(imageView);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteItem</span><span class="params">(<span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">        remove(position);</span><br><span class="line">        notifyDataSetChanged();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以通过Android Studio提供的内存分析工具去查看，优化过后的内存使用情况<br><img src="https://github.com/JackliJ/JackImage/blob/master/2018614163546.png?raw=true" alt="enter image description here"><br>这是急速滑动的时候，非常流畅，内存使用稳定，没有大幅度波动<br><img src="https://github.com/JackliJ/JackImage/blob/master/2018%E5%B9%B4614163608.png?raw=true" alt="enter image description here"><br>往回滑动，图片进行复用，内存使用得很少<br><img src="https://github.com/JackliJ/JackImage/blob/master/2018%E5%B9%B4614163618.png?raw=true" alt="enter image description here"><br>再上一张动态图</p>
+<hr>
+<p><img src="https://github.com/JackliJ/JackImage/blob/master/2018614165552.gif?raw=true" alt="enter image description here"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%9A%8F%E7%AC%94/" rel="tag"># 随笔</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/05/30/%E5%A6%82%E4%BD%95%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BE%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AFAPP-%E7%AC%AC%E4%BA%8C%E6%9C%9F/" rel="prev" title="如何开发一款即时通讯APP-第二期">
+      <i class="fa fa-chevron-left"></i> 如何开发一款即时通讯APP-第二期
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/07/04/Android-IPC%E6%9C%BA%E5%88%B6%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%85%B1%E4%BA%AB/" rel="next" title="Android IPC机制与数据共享">
+      Android IPC机制与数据共享 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96Android%E7%80%91%E5%B8%83%E6%B5%81"><span class="nav-number">1.</span> <span class="nav-text">如何优化Android瀑布流</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jack Li</p>
+  <div class="site-description" itemprop="description">You still need to have a dream. What if it came true?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jack Li</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
