@@ -149,6 +149,101 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/17/Python%20+%20UIautomator2%20%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jack Li">
+      <meta itemprop="description" content="You still need to have a dream. What if it came true?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Au Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/17/Python%20+%20UIautomator2%20%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/" class="post-title-link" itemprop="url">permission denied (publickey)问题的解决</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-12-17 17:01:28 / 修改时间：17:02:02" itemprop="dateCreated datePublished" datetime="2021-12-17T17:01:28+08:00">2021-12-17</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9D%82%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">杂记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Python-UIautomator2-实现自动化测试"><a href="#Python-UIautomator2-实现自动化测试" class="headerlink" title="Python + UIautomator2 实现自动化测试"></a>Python + UIautomator2 实现自动化测试</h1><h5 id="Uiautomator"><a href="#Uiautomator" class="headerlink" title="Uiautomator"></a>Uiautomator</h5><p>是Google提供的用来做安卓自动化测试的一个Java库，基于Accessibility服务。功能很强，可以对第三方App进行测试，获取屏幕上任意一个APP的任意一个控件属性，并对其进行任意操作，但有两个缺点：</p>
+<ul>
+<li>只能使用Java进行测试脚本的开发</li>
+<li>测试脚本要打包成jar或者apk包上传到设备上才能运行</li>
+</ul>
+<p>我们可以在Android SDK中找到相关组件</p>
+<p><img src="https://raw.githubusercontent.com/JackliJ/JackImage/master/20211217151603.png" alt="20211217151603.png"></p>
+<p>为了解决上述的问题，GitHub开源了改进的版本<a target="_blank" rel="noopener" href="https://github.com/openatx/uiautomator2">UIautomator2</a>,除了对原有的库的bug进行了修复，还增加了很多新的Feature,并且我们可以使用Python进行脚本的开发。</p>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作:"></a><strong>准备工作:</strong></h1><ol>
+<li>Python3.8.2安装</li>
+<li>UIautomator2组件安装</li>
+<li>Weditor可视化工具安装</li>
+<li>ADB工具安装</li>
+</ol>
+<p>Python安装教程百度上很多教程，需要注意的是请安装3以上版本，2.7版本大部分库都不在支持了，pip也请使用pip3进行相关的操作,安装成功后确认版本</p>
+<p><code>Python3 --version</code></p>
+<p>pip3安装UIautomator2插件</p>
+<p><code>pip3 install -U uiautomator2</code></p>
+<p>pip3安装插件Weditor可视化插件</p>
+<p><code>pip3 install --pre -U weditor</code></p>
+<p>安装完成之后 通过<br><code>pip3 list</code></p>
+<p>查看安装组件列表，确认是否安装成功</p>
+<p>ADB工具由Android SDK自带，我们只需要配置相关的环境变量即可，打开系统变量配置</p>
+<p><code>vi ~/.bash_profile</code></p>
+<p>添加如下路径即可</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export ANDROID_HOME</span><br><span class="line">export PATH=$PATH:$ANDROID_HOME/tools</span><br><span class="line">export PATH=$PATH:$ANDROID_HOME/platform-tools</span><br></pre></td></tr></table></figure>
+<p>通过 <code>source ~/.bash_profile</code> 生效</p>
+<p>到这一步 基本的环境安装工作就完成了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2018/11/07/permission-denied-publickey-%E9%97%AE%E9%A2%98%E7%9A%84%E8%A7%A3%E5%86%B3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -199,7 +294,7 @@
       
           <h3 id="1-检查SSH-key是否已经存在"><a href="#1-检查SSH-key是否已经存在" class="headerlink" title="1 检查SSH key是否已经存在"></a>1 检查SSH key是否已经存在</h3><p>用这个命令 ls ~/.ssh/<br>进行检查 id_rsa.pub 是否存在，如果存在，就不用生成一个新的SSH key了，直接跳到下面的第3步。</p>
 <h3 id="2-如果第1步中的SSH-key不存在，生成一个新的SSH-key"><a href="#2-如果第1步中的SSH-key不存在，生成一个新的SSH-key" class="headerlink" title="2 如果第1步中的SSH key不存在，生成一个新的SSH key"></a>2 如果第1步中的SSH key不存在，生成一个新的SSH key</h3><p>命令如下：</p>
-<p>ssh-keygen -t rsa -b 2048 -C “<a href="mailto:&#121;&#x6f;&#117;&#114;&#95;&#x65;&#x6d;&#97;&#105;&#108;&#x40;&#101;&#x78;&#x61;&#x6d;&#112;&#108;&#x65;&#46;&#x63;&#111;&#x6d;">&#121;&#x6f;&#117;&#114;&#95;&#x65;&#x6d;&#97;&#105;&#108;&#x40;&#101;&#x78;&#x61;&#x6d;&#112;&#108;&#x65;&#46;&#x63;&#111;&#x6d;</a>”<br>其中，<a href="mailto:&#x79;&#111;&#117;&#x72;&#x5f;&#x65;&#x6d;&#97;&#x69;&#x6c;&#64;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#x6f;&#x6d;">&#x79;&#111;&#117;&#x72;&#x5f;&#x65;&#x6d;&#97;&#x69;&#x6c;&#64;&#x65;&#120;&#x61;&#x6d;&#x70;&#x6c;&#101;&#46;&#x63;&#x6f;&#x6d;</a>要修改成你的邮箱地址。<br>回车后输出如下：<br>Generating public/private rsa key pair.<br>Enter file in which to save the key (/home/xxx/.ssh/id_rsa):<br>其中，xxx是你的用户名，直接回车，会将key保存到默认文件中。<br>接着会输出：<br>Enter passphrase (empty for no passphrase):<br>Enter same passphrase again:<br>这两步是让你输入一个密码，以及确认密码，这个密码在你提交代码到Github时会用到【注意：记住这个密码，最简单的方式就是设置的和github账户登入密码一样，容易记住】<br>回车后就提示成功了：<br>Your identification has been saved in /home/xxx/.ssh/id_rsa.<br>Your public key has been saved in /home/xxx/.ssh/id_rsa.pub.<br>The key fingerprint is:<br>01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db <a href="mailto:&#121;&#111;&#x75;&#114;&#x5f;&#x65;&#109;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#97;&#x6d;&#112;&#108;&#101;&#46;&#x63;&#111;&#109;">&#121;&#111;&#x75;&#114;&#x5f;&#x65;&#109;&#97;&#105;&#x6c;&#64;&#x65;&#x78;&#97;&#x6d;&#112;&#108;&#101;&#46;&#x63;&#111;&#109;</a><br>到这一步，你会发现 ~/.ssh/id_rsa.pub 文件已经生成了。</p>
+<p>ssh-keygen -t rsa -b 2048 -C “<a href="mailto:&#121;&#x6f;&#117;&#114;&#x5f;&#x65;&#x6d;&#97;&#x69;&#x6c;&#64;&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#109;">&#121;&#x6f;&#117;&#114;&#x5f;&#x65;&#x6d;&#97;&#x69;&#x6c;&#64;&#101;&#x78;&#97;&#109;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#109;</a>”<br>其中，<a href="mailto:&#121;&#x6f;&#x75;&#x72;&#x5f;&#101;&#x6d;&#97;&#105;&#108;&#x40;&#x65;&#x78;&#x61;&#109;&#112;&#108;&#101;&#46;&#x63;&#111;&#x6d;">&#121;&#x6f;&#x75;&#x72;&#x5f;&#101;&#x6d;&#97;&#105;&#108;&#x40;&#x65;&#x78;&#x61;&#109;&#112;&#108;&#101;&#46;&#x63;&#111;&#x6d;</a>要修改成你的邮箱地址。<br>回车后输出如下：<br>Generating public/private rsa key pair.<br>Enter file in which to save the key (/home/xxx/.ssh/id_rsa):<br>其中，xxx是你的用户名，直接回车，会将key保存到默认文件中。<br>接着会输出：<br>Enter passphrase (empty for no passphrase):<br>Enter same passphrase again:<br>这两步是让你输入一个密码，以及确认密码，这个密码在你提交代码到Github时会用到【注意：记住这个密码，最简单的方式就是设置的和github账户登入密码一样，容易记住】<br>回车后就提示成功了：<br>Your identification has been saved in /home/xxx/.ssh/id_rsa.<br>Your public key has been saved in /home/xxx/.ssh/id_rsa.pub.<br>The key fingerprint is:<br>01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db <a href="mailto:&#x79;&#x6f;&#117;&#114;&#95;&#101;&#109;&#x61;&#x69;&#108;&#x40;&#x65;&#x78;&#97;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;">&#x79;&#x6f;&#117;&#114;&#95;&#101;&#109;&#x61;&#x69;&#108;&#x40;&#x65;&#x78;&#97;&#x6d;&#x70;&#x6c;&#x65;&#x2e;&#x63;&#x6f;&#x6d;</a><br>到这一步，你会发现 ~/.ssh/id_rsa.pub 文件已经生成了。</p>
 <h3 id="3-将SSH-key添加到ssh-agent"><a href="#3-将SSH-key添加到ssh-agent" class="headerlink" title="3 将SSH key添加到ssh-agent"></a>3 将SSH key添加到ssh-agent</h3><p>先确认ssh-agent处于启用状态：<br>eval “$(ssh-agent -s)”</p>
 <p>输出类似于：</p>
 <p>Agent pid 32070</p>
@@ -857,13 +952,13 @@
 <p>GitHub的申请注册和项目建立</p>
 </blockquote>
 <hr>
-<p><strong>1.</strong>  GitHub就安装官网的方式进行注册就好了 附上链接 <a target="_blank" rel="noopener" href="https://github.com/">GitHub</a><br><strong>2.<strong>注册完成后 点击头像旁边的+号按钮  选择 <strong>New repository</strong> 新建一个项目<br><strong>3.<strong>这里请注意 <strong>建立项目的名称 必须和你GitHub的昵称一致</strong>  比如我的Github名称是 jacklij 所以  我的名称就是jacklij.github.io  <strong>github.io的后缀也是必须的</strong>  这样Github才会为你默认开启github pages 你才能使用博客<br><strong>4.</strong> 所以 你新建项目的名称必然是   <strong>你的GitHub昵称.github.io</strong>  请确认这一点<br><strong>5.</strong> 剩下的不用管了  然后底下按钮直接建立  进入setting里面 找到github pages  上面的链接 就是你后面的博客链接  一般也就是上面注册的名称<br><strong>6.</strong> GitHub强制使用Https进行链接  所以你必须配置SSH公钥到github上 生成SSH秘钥 请百度Google<br><strong>7.</strong> 将id_rsa.pub 文件内容全部复制 打开方式可以选择文本打开  在你的github网页点击头像  最下面 设置(setting) 进去之后 选择</strong>SSH keys</strong> 新建一个 N</strong>ew SSH Key</strong> 将刚刚复制的公钥粘贴进去 保存<br><strong>8.</strong> 本地测试SSH是否配置成功 cmd输入ssh -T <a href="mailto:&#x67;&#105;&#116;&#64;&#x67;&#105;&#116;&#104;&#x75;&#x62;&#46;&#99;&#x6f;&#x6d;">&#x67;&#105;&#116;&#64;&#x67;&#105;&#116;&#104;&#x75;&#x62;&#46;&#99;&#x6f;&#x6d;</a> 进行验证  <strong>输入yes</strong> 按回车</p>
+<p><strong>1.</strong>  GitHub就安装官网的方式进行注册就好了 附上链接 <a target="_blank" rel="noopener" href="https://github.com/">GitHub</a><br><strong>2.<strong>注册完成后 点击头像旁边的+号按钮  选择 <strong>New repository</strong> 新建一个项目<br><strong>3.<strong>这里请注意 <strong>建立项目的名称 必须和你GitHub的昵称一致</strong>  比如我的Github名称是 jacklij 所以  我的名称就是jacklij.github.io  <strong>github.io的后缀也是必须的</strong>  这样Github才会为你默认开启github pages 你才能使用博客<br><strong>4.</strong> 所以 你新建项目的名称必然是   <strong>你的GitHub昵称.github.io</strong>  请确认这一点<br><strong>5.</strong> 剩下的不用管了  然后底下按钮直接建立  进入setting里面 找到github pages  上面的链接 就是你后面的博客链接  一般也就是上面注册的名称<br><strong>6.</strong> GitHub强制使用Https进行链接  所以你必须配置SSH公钥到github上 生成SSH秘钥 请百度Google<br><strong>7.</strong> 将id_rsa.pub 文件内容全部复制 打开方式可以选择文本打开  在你的github网页点击头像  最下面 设置(setting) 进去之后 选择</strong>SSH keys</strong> 新建一个 N</strong>ew SSH Key</strong> 将刚刚复制的公钥粘贴进去 保存<br><strong>8.</strong> 本地测试SSH是否配置成功 cmd输入ssh -T <a href="mailto:&#103;&#105;&#x74;&#64;&#103;&#105;&#116;&#x68;&#x75;&#x62;&#46;&#x63;&#x6f;&#x6d;">&#103;&#105;&#x74;&#64;&#103;&#105;&#116;&#x68;&#x75;&#x62;&#46;&#x63;&#x6f;&#x6d;</a> 进行验证  <strong>输入yes</strong> 按回车</p>
 <hr>
 <blockquote>
 <p>将Hexo静态网页提交到Github上</p>
 </blockquote>
 <hr>
-<p> **1.**修改站点配置文件_config.yml：<br>deploy:<br>  type: git<br>  repo: <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#x69;&#x74;&#104;&#x75;&#x62;&#x2e;&#x63;&#111;&#109;">&#103;&#105;&#116;&#x40;&#103;&#x69;&#x74;&#104;&#x75;&#x62;&#x2e;&#x63;&#111;&#109;</a>:你的GitHub昵称/你的GitHub昵称.github.io.git<br>  branch: master<br>**2.**安装Git部署插件：npm install hexo-deployer-git –save</p>
+<p> **1.**修改站点配置文件_config.yml：<br>deploy:<br>  type: git<br>  repo: <a href="mailto:&#103;&#x69;&#116;&#x40;&#103;&#105;&#x74;&#x68;&#117;&#98;&#46;&#99;&#111;&#x6d;">&#103;&#x69;&#116;&#x40;&#103;&#105;&#x74;&#x68;&#117;&#98;&#46;&#99;&#111;&#x6d;</a>:你的GitHub昵称/你的GitHub昵称.github.io.git<br>  branch: master<br>**2.**安装Git部署插件：npm install hexo-deployer-git –save</p>
 <p>**3.**部署：</p>
 <p>hexo clean     # 清理本地静态文件；<br>hexo generate  # 生成静态页面，即public文件夹；<br>hexo deploy    # 部署到github<br>**4.**部署完毕，blog下的文件目录如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── .deploy_git  # （新增）hexo deploy 生成的git部署文件</span><br><span class="line">├── public       # （新增）hexo generate 生成的静态文件</span><br><span class="line">├── db.json      # （新增）hexo generate 生成的数据</span><br><span class="line">├── node_modules # 依赖模块，插件模块</span><br><span class="line">├── scaffolds    # 文章模板</span><br><span class="line">├── source       # 用户源文件：页面，文章markdown文件</span><br><span class="line">|   └── _posts   # 文章</span><br><span class="line">└── themes       # 主题</span><br><span class="line">├── .gitignore   # git时需忽略文件</span><br><span class="line">├── _config.yml  # 站点配置文件</span><br><span class="line">├── package.json # 应用程序的信息</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -963,122 +1058,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/08/%E6%94%AF%E4%BB%98%E5%AE%9DRES%E7%9B%B8%E5%85%B3%E8%AE%B0%E5%BD%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jack Li">
-      <meta itemprop="description" content="You still need to have a dream. What if it came true?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Welcome to Au Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/08/%E6%94%AF%E4%BB%98%E5%AE%9DRES%E7%9B%B8%E5%85%B3%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">支付宝RES相关记录</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2018-05-08 18:13:42 / 修改时间：18:22:02" itemprop="dateCreated datePublished" datetime="2018-05-08T18:13:42+08:00">2018-05-08</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">开发随笔</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Windows 下openssl安装与配置</p>
-<p>网上方法很多，大部分是针对32位机的,自己的电脑因为是win7,64位，摸索了很久才安装成功.</p>
-<p>环境<br>WIN7, 64位， vs2005</p>
-<p>下载ActivePerl<br>配置过程中需要生成一些mak文件，这些生成代码用perl脚本生成，所以要安装一个ActivePerl.</p>
-<p>网址: <a target="_blank" rel="noopener" href="http://www.activestate.com/activeperl/">http://www.activestate.com/activeperl/</a></p>
-<p>我下载了两个版本:</p>
-<p>[css] view plain copy 在CODE上查看代码片派生到我的代码片<br>ActivePerl-5.16.2.1602-MSWin32-x64-296513.msi<br>ActivePerl-5.16.2.1602-MSWin32-x86-296513.msi  </p>
-<p>装的是第一个版本，第二个版本没装成功.</p>
-<p>下载openssl<br>网址 <a target="_blank" rel="noopener" href="http://www.openssl.org/">http://www.openssl.org/</a><br>我用的是openssl-0.9.8g版本, 没试过其它版本是否可行.<br>把openssl-0.9.8g.tar.gz解压到c盘根目录.</p>
-<p>安装步骤：<br>(可以参照openssl目录下的install.win32)<br>1打开命令行<br>进入openssl源码目录。<br>cd c:/openssl-0.9.8.g<br>执行perl Configure VC-WIN32</p>
-<p>2执行运行ms\do_ms<br>另外两种方式如果使用也必须保证本机有编译器才能使用。<br>:ms\do_masm（默认vc自带的编译器；也也以自己下载安装）<br>:ms\do_nasm（需要自己下载）</p>
-<p>3 DOS窗口转到C:\Program Files (x86)\Microsoft Visual Studio 8\VC\bin目录<br>执行vcvars32.bat以配置环境变量.</p>
-<p>4、跳到openssl目录下，编译动态链接库<br>cd c:/openssl-0.9.8.g<br>执行 &gt;nmake -f ms\ntdll.mak</p>
-<p>如果编译成功，输出在out32dll目录下：包括可执行文件、两个dll和两个lib文件: libeay32.dll, libeay32.lib, ssleay32.dll,ssleay32.lib</p>
-<p>这里要特别强调一下，这种方法生成的是动库链接库, 也就是我们的应用工程如果要使用openssl, 编译时要指定<br>lib文件，程序发布时要用到相应的dll. 我遇到过一种情况是, 在win7下发布的使用openssl的程序无法运行，弹出<br>“运行时初始化相关的错误”, 但是在xp下编译，发布，在其它win7和winXP上都能运行. 估计是win7下没配置好，导致只能本机编译，<br>运行，无法发布.</p>
-<p>如果要把openssl编译成静态的库，只要把上面的ntdll.mak换成nt.mak就可以了，我试着用了一个静态的库，<br>发现要解决很多编译时的兼容，冲突问题，建议不要使用静态方法.</p>
-<p>(注意虽然是64位win7, 下生成的也是out32dll, 我也不知道为什么)</p>
-<p>建立工程<br>打开vs2005,<br>在additionalinclude directories加上<br>“C:\openssl-0.9.8g\include”<br>这个目录.</p>
-<p>在additionallibrary directories加上<br>“C:\openssl-0.9.8g\out32dll”<br>这个目录</p>
-<p>代码类似下面这样:<br>[cpp] view plain copy 在CODE上查看代码片派生到我的代码片</p>
-<ul>
-<li>#include&lt;stdio.h&gt;  </li>
-<li>#include&lt;stdlib.h&gt;  </li>
-<li>#include&lt;string.h&gt;  </li>
-<li>#include&lt;time.h&gt;  </li>
-<li>#include&lt;openssl/bn.h&gt;  </li>
-<li>#include&lt;openssl/ec.h&gt;  </li>
-<li>#include&lt;openssl/rand.h&gt;  </li>
-<li>#include&lt;openssl/err.h&gt;  </li>
-<li>#include&lt;openssl/ecdsa.h&gt;  </li>
-<li>#include&lt;openssl/ecdh.h&gt;  </li>
-<li>#include”sm2.h”  </li>
-<li>#pragmacomment(lib,”libeay32.lib”)  </li>
-</ul>
-<p>编译不会有问题.同样在VC6下，把上面两个目录包含进来，编译也通过.</p>
-<p>原博客链接地址：<a target="_blank" rel="noopener" href="http://blog.csdn.net/pony_maggie/article/details/8588888">http://blog.csdn.net/pony_maggie/article/details/8588888</a><br>参照的word文档：Win7环境中安装OpenSSL的详细步骤.docx</p>
-<p>openssl安装文件备份，直接解压到C盘根目录即可使用openssl.zip</p>
-<p>openssl 生成公钥 私钥命令行</p>
-<p>Windows用户在cmd窗口中进行以下操作：<br>C:\Users\Hammer&gt;cd C:\OpenSSL-Win32\bin 进入OpenSSL安装目录<br>C:\OpenSSL-Win32\bin&gt;openssl.exe 进入OpenSSL程序<br>OpenSSL&gt; genrsa -out rsa_private_key.pem 1024 生成私钥<br>OpenSSL&gt; pkcs8 -topk8 -inform PEM -in rsa_private_key.pem -outform PEM -nocrypt Java开发者需要将私钥转换成PKCS8格式<br>OpenSSL&gt; rsa -in rsa_private_key.pem -pubout -out rsa_public_key.pem 生成公钥<br>OpenSSL&gt; exit ## 退出OpenSSL程序</p>
-<p>正确的生成格式：<br>注意：对于使用Java的开发者，将pkcs8在console中输出的私钥去除头尾、换行和空格，作为开发者私钥，对于.NET和PHP的开发者来说，<br>无需进行pkcs8命令行操作。<br>经过以上步骤，开发者可以在当前文件夹中（Windows用户在C:\OpenSSL-Win32\bin）看到rsaprivatekey.pem和rsapublickey.pem两个文件，前者为私钥，后者为公钥。以下为使用OpenSSL生成的私钥文件和公钥文件示例。<br>标准的私钥文件示例（PHP、.NET使用）<br>1<br>2<br>3<br>—–BEGIN RSA PRIVATE KEY—–<br>MIICXQIBAAKBgQC+L0rfjLl3neHleNMOsYTW8r0QXZ5RVb2p/vvY3fJNNugvJ7<br>lo4+fdBz+LN4mDxTz4MTOhi5e2yeAqx+v3nKpNmPzC5LmDjhHZURhwbqFtIpZD51mOfno2c3MDwlrsVi6m<br>TypbNu4uaQzw/TOpwufSLWF7k6p2pLoVmmqJzQiD0QIDAQABAoGAakB1risquv9D4zX7hCv9MTFwGyKSfp<br>JOYhkIjwKAik7wrNeeqFEbisq<br>v35FpjGq3Q1oJpGkem4pxaLVEyZOHONefZ9MGVChT/MNH5b0FJYWl392RZy8KCdq376Vt4gKVlABvaV1<br>DkapL+nLh7LMo/bENudARsxD55IGObMU19lkCQQDwHmzWPMHfc3kdY6AqiLrOss+MVIAhQqZOHhDe0aW<br>2gZtwiWeYK1wB/fRxJ5esk1sScOWgzvCN/oGJLhU3kipHAkEAysNoSdG2oWADxlIt4W9kUiiiqNgimH<br>GMHPwp4JMxupHMTm7D9XtGUIiDijZxunHv3<br>kvktNfWj3Yji0661z<br>HVJwJBAM8TDf077F4NsVc9AXVs8N0sq3xzqwQD/HPFzfq6hdR8tVY5yRMb4X7+SX4EDPORKKsgnYcur<br>5lk8MUi7r072iUCQQC8xQvUne+fcdpRyrR4StJlQvucogwjTKMbYRBDygXkIlTJOIorgudFlrKP/HwJDoY4uQNl8gQJb/1LdrKwIe7FAkBl0TNtfodGrDXBHw<br>BgtN/t3pyi+sz7OpJdUklKE7zMSBuLd1E3O4JMzvWP9wEE7JDb+brjgK4/cxxUHUTkk592<br>—–END RSA PRIVATE KEY—–<br>PKCS8处理后的私钥文件示例（Java使用）<br>1<br>2<br>3<br>—–BEGIN PRIVATE KEY—–<br>MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAN0yqPkLXlnhM+2H/57aHsYHaHXazr9pFQun907TMvmbR04wHChVsKVgGUF1hC0FN9hfeYT5v2SXg1WJSg2tSgk7F<br>29SpsF0I36oSLCIszxdu7ClO7c22mxEVuCjmYpJdqb6XweAZzv4Is661jXP4PdrCTHRdVTU5zR9x<br>UByiLSVAgMBAAECgYEAhznORRonHylm9oKaygEsqQGkYdBXbnsOS6busLi6xA+iovEUdbAVIrTCG<br>9t854z2HAgaISoRUKyztJoOtJfI1wJaQU+XL+U3JIh4jmNx/k5UzJijfvfpT7Cv3ueMtqyAGBJrkLvXjiS7O5ylaCGuB0Qz711bWGkRrVoosPM3N6ECQQD8hVQ<br>UgnHEVHZYtvFqfcoq2g/onPbSqyjdrRu35a7PvgDAZx69Mr/XggGNTgT3jJn7+2XmiGkHM1fd1<br>Ob/3uAdAkEA4D7aE3ZgXG/PQqlm3VbE/+4MvNl8xhjqOkByBOY2ZFfWKhlRziLEPSSAh16xEJ7<br>9WgY9iti+guLRAMravGrs2QJBAOmKWYeaWKNNxiIoF7/4VDgrcpkcSf3uRB44UjFSn8kLnWBUP<br>o6WV+x1FQBdjqRviZ4NFGIP+KqrJnFHzNgJhVUCQFzCAukMDV4PLfeQJSmna8PFz2UKva8fvTu<br>tTryyEYu+PauaX5laDjyQbc4RIEMU0Q29CRX3BA8WDYg7YPGRdTkCQQCG+pjU2FB17ZLuKRlKE<br>dtXNV6zQFTmFc1TKhlsDTtCkWs/xwkoCfZKstuV3Uc5J4BNJDkQOGm38pDRPcUDUh2/<br>—–END PRIVATE KEY—–<br>公钥文件示例<br>1<br>2<br>3<br>—–BEGIN PUBLIC KEY—–<br>MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDQWiDVZ7XYxa4CQsZoB3n7bfxLDkeGKjyQ<br>Pt2FUtm4TWX9OYrd523iw6UUqnQ+Evfw88JgRnhyXadp+vnPKP7unormYQAfsM/CxzrfMoV<br>dtwSiGtIJB4pfyRXjA+KL8nIa2hdQy5nLfgPVGZN4WidfUY/QpkddCVXnZ4bAUaQjXQIDAQAB<br>—–END PUBLIC KEY—–</p>
-<p>证书文件的使用    .p12文件解析</p>
-<p>同一个.p12证书怎么android获取到私钥是16进制的，java获取到的私钥是10进制。<br>android代码：<br>KeyStore ks = KeyStore.getInstance(“PKCS12”);<br>InputStream fis = ctx.getAssets().open(“MobileClient.p12”);<br>char[] pwd = “123456”.toCharArray();<br>ks.load(fis, pwd);<br>fis.close();<br>Enumeration enume = ks.aliases();<br>String keyAlias = null;<br>if (enume.hasMoreElements()) {<br> keyAlias = (String) enume.nextElement();<br>}<br>PrivateKey pk = (PrivateKey) ks.getKey(keyAlias, pwd);<br>System.out.println(pk);</p>
-<p>java代码：<br>KeyStore ks = KeyStore.getInstance(“PKCS12”);<br>FileInputStream fis = new FileInputStream(“h:/MobileClient.p12”);<br>char[] pwd = “123456”.toCharArray();<br>ks.load(fis, pwd);<br>fis.close();<br>Enumeration enume = ks.aliases();<br>String keyAlias = null;<br>if (enume.hasMoreElements()) {<br> keyAlias = (String) enume.nextElement();<br>}<br>PrivateKey pk = (PrivateKey) ks.getKey(keyAlias, pwd);<br>System.out.println(pk);</p>
-<p>andorid获取到的私钥：</p>
-<p>java获取到的私钥：</p>
-<p>原博客链接地址：<a target="_blank" rel="noopener" href="https://doc.open.alipay.com/doc2/detail?treeId=58&amp;articleId=103242&amp;docType=1">https://doc.open.alipay.com/doc2/detail?treeId=58&amp;articleId=103242&amp;docType=1</a></p>
-<p>本文为学习记录，相关摘抄至网络。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -1143,7 +1127,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
