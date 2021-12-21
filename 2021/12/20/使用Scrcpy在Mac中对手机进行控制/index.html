@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="使用Scrcpy在Mac中对手机进行操作控制通过ADB连接手机之后，可能一桌子上都是各种测试机，不便于操作。 程序员嘛，懒点能创造生产力。 今天介绍的是：使用开源项目Scrcpy进行手机的投屏和操控 对比现在市面上各种免费的手机操控软件，最终还是觉得这款最好用。 官方原文的特点介绍: It focuses on:  lightness: native, displays only the devi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Scrcpy在Mac中对手机进行控制">
+<meta property="og:url" content="http://example.com/2021/12/20/%E4%BD%BF%E7%94%A8Scrcpy%E5%9C%A8Mac%E4%B8%AD%E5%AF%B9%E6%89%8B%E6%9C%BA%E8%BF%9B%E8%A1%8C%E6%8E%A7%E5%88%B6/index.html">
+<meta property="og:site_name" content="Welcome to Au Blog">
+<meta property="og:description" content="使用Scrcpy在Mac中对手机进行操作控制通过ADB连接手机之后，可能一桌子上都是各种测试机，不便于操作。 程序员嘛，懒点能创造生产力。 今天介绍的是：使用开源项目Scrcpy进行手机的投屏和操控 对比现在市面上各种免费的手机操控软件，最终还是觉得这款最好用。 官方原文的特点介绍: It focuses on:  lightness: native, displays only the devi">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-12-20T03:47:36.000Z">
+<meta property="article:modified_time" content="2021-12-21T03:20:24.690Z">
+<meta property="article:author" content="Jack Li">
+<meta property="article:tag" content="环境配置">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/12/20/%E4%BD%BF%E7%94%A8Scrcpy%E5%9C%A8Mac%E4%B8%AD%E5%AF%B9%E6%89%8B%E6%9C%BA%E8%BF%9B%E8%A1%8C%E6%8E%A7%E5%88%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>使用Scrcpy在Mac中对手机进行控制 | Welcome to Au Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Welcome to Au Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Don&apos;t debug standing up. It cuts your patience m half, and you need all you can muster.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/20/%E4%BD%BF%E7%94%A8Scrcpy%E5%9C%A8Mac%E4%B8%AD%E5%AF%B9%E6%89%8B%E6%9C%BA%E8%BF%9B%E8%A1%8C%E6%8E%A7%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jack Li">
+      <meta itemprop="description" content="You still need to have a dream. What if it came true?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Au Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用Scrcpy在Mac中对手机进行控制
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-20 11:47:36" itemprop="dateCreated datePublished" datetime="2021-12-20T11:47:36+08:00">2021-12-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-21 11:20:24" itemprop="dateModified" datetime="2021-12-21T11:20:24+08:00">2021-12-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="使用Scrcpy在Mac中对手机进行操作控制"><a href="#使用Scrcpy在Mac中对手机进行操作控制" class="headerlink" title="使用Scrcpy在Mac中对手机进行操作控制"></a>使用Scrcpy在Mac中对手机进行操作控制</h1><p>通过ADB连接手机之后，可能一桌子上都是各种测试机，不便于操作。</p>
+<p>程序员嘛，懒点能创造生产力。</p>
+<p>今天介绍的是：使用开源项目<a target="_blank" rel="noopener" href="https://github.com/Genymobile/scrcpy#physical-keyboard-simulation-hid">Scrcpy</a>进行手机的投屏和操控</p>
+<p>对比现在市面上各种免费的手机操控软件，最终还是觉得这款最好用。</p>
+<p>官方原文的特点介绍:</p>
+<p>It focuses on:</p>
+<ul>
+<li>lightness: native, displays only the device screen</li>
+<li>performance: 30~120fps, depending on the device</li>
+<li>quality: 1920×1080 or above</li>
+<li>low latency: 35~70ms</li>
+<li>low startup time: ~1 second to display the first image</li>
+<li>non-intrusiveness: nothing is left installed on the device</li>
+<li>user benefits: no account, no ads, no internet required</li>
+<li>freedom: free and open source software</li>
+<li>Its features include:</li>
+</ul>
+<p>recording</p>
+<ul>
+<li>mirroring with device screen off</li>
+<li>copy-paste in both directions</li>
+<li>configurable quality</li>
+<li>device screen as a webcam (V4L2) (Linux-only)</li>
+<li>physical keyboard simulation (HID) (Linux-only)</li>
+<li>and more…</li>
+</ul>
+<p>总结下来就是</p>
+<ul>
+<li>亮度（原生，仅显示设备屏幕）</li>
+<li>性能（30~60fps）</li>
+<li>质量（1920×1080或以上）</li>
+<li>低延迟（35~70ms）</li>
+<li>启动时间短（显示第一张图像约1秒）</li>
+<li>非侵入性（设备上没有安装任何东西）</li>
+</ul>
+<h1 id="安装教程-Mac"><a href="#安装教程-Mac" class="headerlink" title="安装教程(Mac)"></a>安装教程(Mac)</h1><p>如果你没安装<a target="_blank" rel="noopener" href="https://brew.sh/">brew</a>请先行安装，这里仅介绍Mac的安装，其他平台请参考原始文档</p>
+<p><code>brew install scrcpy</code></p>
+<p>等安装程序执行完毕，scrcpy就已经完成安装了</p>
+<p>scrcpy依赖于Adb插件，所以在启动之前，需要确保设备已连接至电脑</p>
+<p>关于adb和相关环境变量的配置，可以参考<a target="_blank" rel="noopener" href="https://www.aufuture.cn/">Python UIautomator2 自动化测试 2.4节</a></p>
+<p>scrcpy启动命令：<code>scrcpy</code></p>
+<p>scrcpy<strong>支持WIFI</strong>连接，连接步骤如下（使用Wi-Fi请保证至少一次USB方式连接）</p>
+<ol>
+<li>确保PC和手机在同一Wifi中</li>
+<li>手机先通过USB与PC相连</li>
+<li>在PC上运行 <code>adb tcpip</code> 服务端口，如端口为5555</li>
+<li>拔下手机的USB连接</li>
+<li>在PC上运行 <code>adb connect</code> 手机IP:服务端口</li>
+<li>像往常一样运行 scrcpy相关命令</li>
+<li>若要切换回USB模式：<code>adb usb</code></li>
+</ol>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ol>
+<li>启动scrcpy</li>
+</ol>
+<p><code>scrcpy</code></p>
+<ol start="2">
+<li>如果有多个设备，需要指定序列号，序列号可以从adb devices获得</li>
+</ol>
+<p><code>scrcpy -s 6a86de95</code></p>
+<ol start="3">
+<li>设置端口</li>
+</ol>
+<p><code>scrcpy -p 27184</code></p>
+<ol start="4">
+<li>查看帮助</li>
+</ol>
+<p><code>scrcpy --help</code></p>
+<ol start="5">
+<li>设置码率（默认8M）</li>
+</ol>
+<p><code>scrcpy -b 8M</code></p>
+<ol start="6">
+<li>限制投屏尺寸</li>
+</ol>
+<p><code>scrcpy -m 1024</code></p>
+<ol start="7">
+<li>裁剪投屏屏幕(长:宽:偏移x:偏移y)</li>
+</ol>
+<p><code>scrcpy -c 800:800:0:0</code></p>
+<ol start="8">
+<li>投屏并录屏</li>
+</ol>
+<p><code>scrcpy -r file.mp4</code></p>
+<ol start="9">
+<li>不投屏只录屏</li>
+</ol>
+<p><code>scrcpy -Nr file.mp4</code></p>
+<ol start="10">
+<li>手指触摸的时候显示轨迹球</li>
+</ol>
+<p><code>scrcpy -t</code></p>
+<ol start="11">
+<li>显示版本信息</li>
+</ol>
+<p><code>scrcpy -v</code></p>
+<ol start="12">
+<li>关闭设备屏幕<br>使用命令行选项启动镜像时，可以关闭设备屏幕：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scrcpy --turn-screen-off</span><br><span class="line">scrcpy -S</span><br></pre></td></tr></table></figure>
+<p>或者随时按<code>Ctrl + o</code>。要重新打开它，请按<code>POWER</code>键（或<code>Ctrl + p</code>）。</p>
+<h1 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h1><table>
+<thead>
+<tr>
+<th align="center">Action</th>
+<th align="center">Windows</th>
+<th align="center">Mac</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">切换全屏模式</td>
+<td align="center">Ctrl+f</td>
+<td align="center">Cmd+f</td>
+</tr>
+<tr>
+<td align="center">将窗口调整为1:1 (完美像素)</td>
+<td align="center">Ctrl+g</td>
+<td align="center">Cmd+g</td>
+</tr>
+<tr>
+<td align="center">调整窗口大小以删除黑色边框</td>
+<td align="center">Ctrl+x</td>
+<td align="center">Double-click¹</td>
+</tr>
+<tr>
+<td align="center">返回到HOME</td>
+<td align="center">Ctrl+h</td>
+<td align="center">Middle-click</td>
+</tr>
+<tr>
+<td align="center">返回</td>
+<td align="center">Ctrl+b</td>
+<td align="center">Right-click²</td>
+</tr>
+<tr>
+<td align="center">Click on APP_SWITCH</td>
+<td align="center">Ctrl+s</td>
+<td align="center">Cmd+s</td>
+</tr>
+<tr>
+<td align="center">点击菜单</td>
+<td align="center">Ctrl+m</td>
+<td align="center">Ctrl+m</td>
+</tr>
+<tr>
+<td align="center">调节音量</td>
+<td align="center">Ctrl+↑ (up)</td>
+<td align="center">Cmd+↑ (up)</td>
+</tr>
+<tr>
+<td align="center">调节音量</td>
+<td align="center">Ctrl+↓ (down)</td>
+<td align="center">Cmd+↓ (down)</td>
+</tr>
+<tr>
+<td align="center">点击手机电源</td>
+<td align="center">Ctrl+p</td>
+<td align="center">Cmd+p</td>
+</tr>
+<tr>
+<td align="center">Power on（打开）</td>
+<td align="center">Right-click²</td>
+<td align="center">Right-click²</td>
+</tr>
+<tr>
+<td align="center">关闭设备屏幕（保持镜像）</td>
+<td align="center">Ctrl+o</td>
+<td align="center">Cmd+o</td>
+</tr>
+<tr>
+<td align="center">展开通知面板</td>
+<td align="center">Ctrl+n</td>
+<td align="center">Cmd+n</td>
+</tr>
+<tr>
+<td align="center">折叠通知面板</td>
+<td align="center">Ctrl+Shift+n</td>
+<td align="center">Cmd+Shift+n</td>
+</tr>
+<tr>
+<td align="center">将设备剪贴板复制到计算机</td>
+<td align="center">Ctrl+c</td>
+<td align="center">Cmd+c</td>
+</tr>
+<tr>
+<td align="center">将计算机剪贴板粘贴到设备</td>
+<td align="center">Ctrl+v</td>
+<td align="center">Cmd+v</td>
+</tr>
+<tr>
+<td align="center">将计算机剪贴板复制到设备</td>
+<td align="center">Ctrl+Shift+v</td>
+<td align="center">Cmd+Shift+v</td>
+</tr>
+<tr>
+<td align="center">启用/禁用FPS计数器（在标准输出上</td>
+<td align="center">Ctrl+i</td>
+<td align="center">Cmd+i</td>
+</tr>
+</tbody></table>
+<p>¹双击黑色边框将其删除。<br>²如果已关闭，请右键单击以打开屏幕，否则按BACK。</p>
+<p>参考博客链接:<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xusx2014/p/11948813.html">https://www.cnblogs.com/xusx2014/p/11948813.html</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" rel="tag"># 环境配置</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/12/20/%E6%A0%B9%E6%8D%AE%E9%9F%B3%E8%B4%9D%E5%A4%A7%E5%B0%8F%E8%BF%9B%E8%A1%8C%E6%B3%A2%E5%8A%A8%E7%9A%84WaveView/" rel="prev" title="可根据音贝大小进行波动的WaveView">
+      <i class="fa fa-chevron-left"></i> 可根据音贝大小进行波动的WaveView
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Scrcpy%E5%9C%A8Mac%E4%B8%AD%E5%AF%B9%E6%89%8B%E6%9C%BA%E8%BF%9B%E8%A1%8C%E6%93%8D%E4%BD%9C%E6%8E%A7%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">使用Scrcpy在Mac中对手机进行操作控制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B-Mac"><span class="nav-number">2.</span> <span class="nav-text">安装教程(Mac)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">常用命令</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="nav-number">4.</span> <span class="nav-text">常用快捷键</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jack Li</p>
+  <div class="site-description" itemprop="description">You still need to have a dream. What if it came true?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jack Li</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

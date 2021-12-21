@@ -149,6 +149,280 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/20/%E4%BD%BF%E7%94%A8Scrcpy%E5%9C%A8Mac%E4%B8%AD%E5%AF%B9%E6%89%8B%E6%9C%BA%E8%BF%9B%E8%A1%8C%E6%8E%A7%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jack Li">
+      <meta itemprop="description" content="You still need to have a dream. What if it came true?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Welcome to Au Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/12/20/%E4%BD%BF%E7%94%A8Scrcpy%E5%9C%A8Mac%E4%B8%AD%E5%AF%B9%E6%89%8B%E6%9C%BA%E8%BF%9B%E8%A1%8C%E6%8E%A7%E5%88%B6/" class="post-title-link" itemprop="url">使用Scrcpy在Mac中对手机进行控制</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-12-20 11:47:36" itemprop="dateCreated datePublished" datetime="2021-12-20T11:47:36+08:00">2021-12-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-21 11:20:24" itemprop="dateModified" datetime="2021-12-21T11:20:24+08:00">2021-12-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91/" itemprop="url" rel="index"><span itemprop="name">开发</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="使用Scrcpy在Mac中对手机进行操作控制"><a href="#使用Scrcpy在Mac中对手机进行操作控制" class="headerlink" title="使用Scrcpy在Mac中对手机进行操作控制"></a>使用Scrcpy在Mac中对手机进行操作控制</h1><p>通过ADB连接手机之后，可能一桌子上都是各种测试机，不便于操作。</p>
+<p>程序员嘛，懒点能创造生产力。</p>
+<p>今天介绍的是：使用开源项目<a target="_blank" rel="noopener" href="https://github.com/Genymobile/scrcpy#physical-keyboard-simulation-hid">Scrcpy</a>进行手机的投屏和操控</p>
+<p>对比现在市面上各种免费的手机操控软件，最终还是觉得这款最好用。</p>
+<p>官方原文的特点介绍:</p>
+<p>It focuses on:</p>
+<ul>
+<li>lightness: native, displays only the device screen</li>
+<li>performance: 30~120fps, depending on the device</li>
+<li>quality: 1920×1080 or above</li>
+<li>low latency: 35~70ms</li>
+<li>low startup time: ~1 second to display the first image</li>
+<li>non-intrusiveness: nothing is left installed on the device</li>
+<li>user benefits: no account, no ads, no internet required</li>
+<li>freedom: free and open source software</li>
+<li>Its features include:</li>
+</ul>
+<p>recording</p>
+<ul>
+<li>mirroring with device screen off</li>
+<li>copy-paste in both directions</li>
+<li>configurable quality</li>
+<li>device screen as a webcam (V4L2) (Linux-only)</li>
+<li>physical keyboard simulation (HID) (Linux-only)</li>
+<li>and more…</li>
+</ul>
+<p>总结下来就是</p>
+<ul>
+<li>亮度（原生，仅显示设备屏幕）</li>
+<li>性能（30~60fps）</li>
+<li>质量（1920×1080或以上）</li>
+<li>低延迟（35~70ms）</li>
+<li>启动时间短（显示第一张图像约1秒）</li>
+<li>非侵入性（设备上没有安装任何东西）</li>
+</ul>
+<h1 id="安装教程-Mac"><a href="#安装教程-Mac" class="headerlink" title="安装教程(Mac)"></a>安装教程(Mac)</h1><p>如果你没安装<a target="_blank" rel="noopener" href="https://brew.sh/">brew</a>请先行安装，这里仅介绍Mac的安装，其他平台请参考原始文档</p>
+<p><code>brew install scrcpy</code></p>
+<p>等安装程序执行完毕，scrcpy就已经完成安装了</p>
+<p>scrcpy依赖于Adb插件，所以在启动之前，需要确保设备已连接至电脑</p>
+<p>关于adb和相关环境变量的配置，可以参考<a target="_blank" rel="noopener" href="https://www.aufuture.cn/">Python UIautomator2 自动化测试 2.4节</a></p>
+<p>scrcpy启动命令：<code>scrcpy</code></p>
+<p>scrcpy<strong>支持WIFI</strong>连接，连接步骤如下（使用Wi-Fi请保证至少一次USB方式连接）</p>
+<ol>
+<li>确保PC和手机在同一Wifi中</li>
+<li>手机先通过USB与PC相连</li>
+<li>在PC上运行 <code>adb tcpip</code> 服务端口，如端口为5555</li>
+<li>拔下手机的USB连接</li>
+<li>在PC上运行 <code>adb connect</code> 手机IP:服务端口</li>
+<li>像往常一样运行 scrcpy相关命令</li>
+<li>若要切换回USB模式：<code>adb usb</code></li>
+</ol>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><ol>
+<li>启动scrcpy</li>
+</ol>
+<p><code>scrcpy</code></p>
+<ol start="2">
+<li>如果有多个设备，需要指定序列号，序列号可以从adb devices获得</li>
+</ol>
+<p><code>scrcpy -s 6a86de95</code></p>
+<ol start="3">
+<li>设置端口</li>
+</ol>
+<p><code>scrcpy -p 27184</code></p>
+<ol start="4">
+<li>查看帮助</li>
+</ol>
+<p><code>scrcpy --help</code></p>
+<ol start="5">
+<li>设置码率（默认8M）</li>
+</ol>
+<p><code>scrcpy -b 8M</code></p>
+<ol start="6">
+<li>限制投屏尺寸</li>
+</ol>
+<p><code>scrcpy -m 1024</code></p>
+<ol start="7">
+<li>裁剪投屏屏幕(长:宽:偏移x:偏移y)</li>
+</ol>
+<p><code>scrcpy -c 800:800:0:0</code></p>
+<ol start="8">
+<li>投屏并录屏</li>
+</ol>
+<p><code>scrcpy -r file.mp4</code></p>
+<ol start="9">
+<li>不投屏只录屏</li>
+</ol>
+<p><code>scrcpy -Nr file.mp4</code></p>
+<ol start="10">
+<li>手指触摸的时候显示轨迹球</li>
+</ol>
+<p><code>scrcpy -t</code></p>
+<ol start="11">
+<li>显示版本信息</li>
+</ol>
+<p><code>scrcpy -v</code></p>
+<ol start="12">
+<li>关闭设备屏幕<br>使用命令行选项启动镜像时，可以关闭设备屏幕：</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scrcpy --turn-screen-off</span><br><span class="line">scrcpy -S</span><br></pre></td></tr></table></figure>
+<p>或者随时按<code>Ctrl + o</code>。要重新打开它，请按<code>POWER</code>键（或<code>Ctrl + p</code>）。</p>
+<h1 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h1><table>
+<thead>
+<tr>
+<th align="center">Action</th>
+<th align="center">Windows</th>
+<th align="center">Mac</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">切换全屏模式</td>
+<td align="center">Ctrl+f</td>
+<td align="center">Cmd+f</td>
+</tr>
+<tr>
+<td align="center">将窗口调整为1:1 (完美像素)</td>
+<td align="center">Ctrl+g</td>
+<td align="center">Cmd+g</td>
+</tr>
+<tr>
+<td align="center">调整窗口大小以删除黑色边框</td>
+<td align="center">Ctrl+x</td>
+<td align="center">Double-click¹</td>
+</tr>
+<tr>
+<td align="center">返回到HOME</td>
+<td align="center">Ctrl+h</td>
+<td align="center">Middle-click</td>
+</tr>
+<tr>
+<td align="center">返回</td>
+<td align="center">Ctrl+b</td>
+<td align="center">Right-click²</td>
+</tr>
+<tr>
+<td align="center">Click on APP_SWITCH</td>
+<td align="center">Ctrl+s</td>
+<td align="center">Cmd+s</td>
+</tr>
+<tr>
+<td align="center">点击菜单</td>
+<td align="center">Ctrl+m</td>
+<td align="center">Ctrl+m</td>
+</tr>
+<tr>
+<td align="center">调节音量</td>
+<td align="center">Ctrl+↑ (up)</td>
+<td align="center">Cmd+↑ (up)</td>
+</tr>
+<tr>
+<td align="center">调节音量</td>
+<td align="center">Ctrl+↓ (down)</td>
+<td align="center">Cmd+↓ (down)</td>
+</tr>
+<tr>
+<td align="center">点击手机电源</td>
+<td align="center">Ctrl+p</td>
+<td align="center">Cmd+p</td>
+</tr>
+<tr>
+<td align="center">Power on（打开）</td>
+<td align="center">Right-click²</td>
+<td align="center">Right-click²</td>
+</tr>
+<tr>
+<td align="center">关闭设备屏幕（保持镜像）</td>
+<td align="center">Ctrl+o</td>
+<td align="center">Cmd+o</td>
+</tr>
+<tr>
+<td align="center">展开通知面板</td>
+<td align="center">Ctrl+n</td>
+<td align="center">Cmd+n</td>
+</tr>
+<tr>
+<td align="center">折叠通知面板</td>
+<td align="center">Ctrl+Shift+n</td>
+<td align="center">Cmd+Shift+n</td>
+</tr>
+<tr>
+<td align="center">将设备剪贴板复制到计算机</td>
+<td align="center">Ctrl+c</td>
+<td align="center">Cmd+c</td>
+</tr>
+<tr>
+<td align="center">将计算机剪贴板粘贴到设备</td>
+<td align="center">Ctrl+v</td>
+<td align="center">Cmd+v</td>
+</tr>
+<tr>
+<td align="center">将计算机剪贴板复制到设备</td>
+<td align="center">Ctrl+Shift+v</td>
+<td align="center">Cmd+Shift+v</td>
+</tr>
+<tr>
+<td align="center">启用/禁用FPS计数器（在标准输出上</td>
+<td align="center">Ctrl+i</td>
+<td align="center">Cmd+i</td>
+</tr>
+</tbody></table>
+<p>¹双击黑色边框将其删除。<br>²如果已关闭，请右键单击以打开屏幕，否则按BACK。</p>
+<p>参考博客链接:<a target="_blank" rel="noopener" href="https://www.cnblogs.com/xusx2014/p/11948813.html">https://www.cnblogs.com/xusx2014/p/11948813.html</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/20/%E6%A0%B9%E6%8D%AE%E9%9F%B3%E8%B4%9D%E5%A4%A7%E5%B0%8F%E8%BF%9B%E8%A1%8C%E6%B3%A2%E5%8A%A8%E7%9A%84WaveView/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -381,7 +655,7 @@
       
           <h3 id="1-检查SSH-key是否已经存在"><a href="#1-检查SSH-key是否已经存在" class="headerlink" title="1 检查SSH key是否已经存在"></a>1 检查SSH key是否已经存在</h3><p>用这个命令 ls ~/.ssh/<br>进行检查 id_rsa.pub 是否存在，如果存在，就不用生成一个新的SSH key了，直接跳到下面的第3步。</p>
 <h3 id="2-如果第1步中的SSH-key不存在，生成一个新的SSH-key"><a href="#2-如果第1步中的SSH-key不存在，生成一个新的SSH-key" class="headerlink" title="2 如果第1步中的SSH key不存在，生成一个新的SSH key"></a>2 如果第1步中的SSH key不存在，生成一个新的SSH key</h3><p>命令如下：</p>
-<p>ssh-keygen -t rsa -b 2048 -C “<a href="mailto:&#x79;&#x6f;&#x75;&#x72;&#95;&#101;&#109;&#97;&#x69;&#108;&#64;&#101;&#x78;&#x61;&#x6d;&#112;&#108;&#x65;&#46;&#99;&#x6f;&#109;">&#x79;&#x6f;&#x75;&#x72;&#95;&#101;&#109;&#97;&#x69;&#108;&#64;&#101;&#x78;&#x61;&#x6d;&#112;&#108;&#x65;&#46;&#99;&#x6f;&#109;</a>”<br>其中，<a href="mailto:&#x79;&#x6f;&#x75;&#x72;&#95;&#x65;&#x6d;&#x61;&#x69;&#108;&#x40;&#101;&#120;&#97;&#109;&#x70;&#108;&#101;&#46;&#x63;&#111;&#109;">&#x79;&#x6f;&#x75;&#x72;&#95;&#x65;&#x6d;&#x61;&#x69;&#108;&#x40;&#101;&#120;&#97;&#109;&#x70;&#108;&#101;&#46;&#x63;&#111;&#109;</a>要修改成你的邮箱地址。<br>回车后输出如下：<br>Generating public/private rsa key pair.<br>Enter file in which to save the key (/home/xxx/.ssh/id_rsa):<br>其中，xxx是你的用户名，直接回车，会将key保存到默认文件中。<br>接着会输出：<br>Enter passphrase (empty for no passphrase):<br>Enter same passphrase again:<br>这两步是让你输入一个密码，以及确认密码，这个密码在你提交代码到Github时会用到【注意：记住这个密码，最简单的方式就是设置的和github账户登入密码一样，容易记住】<br>回车后就提示成功了：<br>Your identification has been saved in /home/xxx/.ssh/id_rsa.<br>Your public key has been saved in /home/xxx/.ssh/id_rsa.pub.<br>The key fingerprint is:<br>01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db <a href="mailto:&#121;&#x6f;&#x75;&#114;&#95;&#101;&#109;&#97;&#x69;&#108;&#x40;&#101;&#x78;&#x61;&#x6d;&#112;&#108;&#x65;&#46;&#x63;&#x6f;&#x6d;">&#121;&#x6f;&#x75;&#114;&#95;&#101;&#109;&#97;&#x69;&#108;&#x40;&#101;&#x78;&#x61;&#x6d;&#112;&#108;&#x65;&#46;&#x63;&#x6f;&#x6d;</a><br>到这一步，你会发现 ~/.ssh/id_rsa.pub 文件已经生成了。</p>
+<p>ssh-keygen -t rsa -b 2048 -C “<a href="mailto:&#x79;&#x6f;&#117;&#x72;&#95;&#101;&#109;&#97;&#105;&#x6c;&#64;&#x65;&#120;&#x61;&#109;&#x70;&#x6c;&#101;&#46;&#x63;&#x6f;&#109;">&#x79;&#x6f;&#117;&#x72;&#95;&#101;&#109;&#97;&#105;&#x6c;&#64;&#x65;&#120;&#x61;&#109;&#x70;&#x6c;&#101;&#46;&#x63;&#x6f;&#109;</a>”<br>其中，<a href="mailto:&#121;&#111;&#x75;&#x72;&#x5f;&#x65;&#x6d;&#x61;&#105;&#108;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#99;&#111;&#x6d;">&#121;&#111;&#x75;&#x72;&#x5f;&#x65;&#x6d;&#x61;&#105;&#108;&#x40;&#101;&#120;&#97;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#99;&#111;&#x6d;</a>要修改成你的邮箱地址。<br>回车后输出如下：<br>Generating public/private rsa key pair.<br>Enter file in which to save the key (/home/xxx/.ssh/id_rsa):<br>其中，xxx是你的用户名，直接回车，会将key保存到默认文件中。<br>接着会输出：<br>Enter passphrase (empty for no passphrase):<br>Enter same passphrase again:<br>这两步是让你输入一个密码，以及确认密码，这个密码在你提交代码到Github时会用到【注意：记住这个密码，最简单的方式就是设置的和github账户登入密码一样，容易记住】<br>回车后就提示成功了：<br>Your identification has been saved in /home/xxx/.ssh/id_rsa.<br>Your public key has been saved in /home/xxx/.ssh/id_rsa.pub.<br>The key fingerprint is:<br>01:0f:f4:3b:ca:85:d6:17:a1:7d:f0:68:9d:f0:a2:db <a href="mailto:&#x79;&#x6f;&#x75;&#x72;&#95;&#101;&#109;&#97;&#105;&#108;&#64;&#101;&#120;&#97;&#x6d;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;">&#x79;&#x6f;&#x75;&#x72;&#95;&#101;&#109;&#97;&#105;&#108;&#64;&#101;&#120;&#97;&#x6d;&#112;&#108;&#101;&#x2e;&#x63;&#x6f;&#x6d;</a><br>到这一步，你会发现 ~/.ssh/id_rsa.pub 文件已经生成了。</p>
 <h3 id="3-将SSH-key添加到ssh-agent"><a href="#3-将SSH-key添加到ssh-agent" class="headerlink" title="3 将SSH key添加到ssh-agent"></a>3 将SSH key添加到ssh-agent</h3><p>先确认ssh-agent处于启用状态：<br>eval “$(ssh-agent -s)”</p>
 <p>输出类似于：</p>
 <p>Agent pid 32070</p>
@@ -966,110 +1240,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2018/05/09/GitHub-Hexo-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jack Li">
-      <meta itemprop="description" content="You still need to have a dream. What if it came true?">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Welcome to Au Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/05/09/GitHub-Hexo-%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95/" class="post-title-link" itemprop="url">GitHub+Hexo 搭建个人博客踩坑记录</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2018-05-09 14:19:14 / 修改时间：15:15:32" itemprop="dateCreated datePublished" datetime="2018-05-09T14:19:14+08:00">2018-05-09</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E9%9A%8F%E7%AC%94/" itemprop="url" rel="index"><span itemprop="name">开发随笔</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p> Hexo3.0 的安装和本地调试(默认你已经安装好Git软件了)</p>
-</blockquote>
-<hr>
-<p>网上比较出名的几篇博客年代都比较久远了，原先照着16年大神的博客去做的环境搭建，死的好惨</p>
-<p>总结安装步骤：</p>
-<p> <strong>1</strong>. 安装node.js的版本建议是最新的，后面安装npm的一些语法才不会不支持 附上官网链接<br>    <a target="_blank" rel="noopener" href="https://nodejs.org/en/">node.js</a><br> <strong>2</strong>. 其次就是hexo的安装         安装hexo   请严格执行以下命令<br>          使用npm安装hexo：npm install hexo-cli -g<br>          如需卸载hexo：npm uninstall hexo -g<br>          查看hexo版本：hexo -v，验证是否安装成功。<br><strong>3</strong>.hexo的初始化  在blog文件下面  你们也可以新建一个 文件夹中右键git bash   在git bash 执行命令  如果你配置了git 环境变量  也可以按住Shift在本文件夹打开命令窗口进行执行<br>    *.新建一个blog文件夹，cd到blog文件夹下，打开Git Bash。<br>    *.hexo初始化：hexo init<br>    *.安装依赖包：npm install<br>    *.初始化完成，在blog下就会生成以下文件目录：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">├── node_modules # 依赖模块</span><br><span class="line">├── scaffolds    # 文章模板</span><br><span class="line">├── source       # 用户源文件：页面，文章markdown文件</span><br><span class="line">|   └── _posts   # 创建的文章</span><br><span class="line">└── themes       # 主题</span><br><span class="line">├── .gitignore   # git忽略文件信息</span><br><span class="line">├── _config.yml  # 站点配置文件</span><br><span class="line">├── package.json # 应用程序的信息</span><br></pre></td></tr></table></figure>
-
-
-<p><strong>4</strong>.hexo本地生成静态页面</p>
-<blockquote>
-<p>hexo clean     # 清理本地静态文件；<br>hexo generate  # 生成静态页面，即public文件夹；<br>hexo server    # 启用hexo本地服务器；<br> 注：Hexo 3.0 把服务器独立成了个别模块，您必须先安装 hexo-server 才能使用。<br> hexo-server安装命令：npm install hexo-server –save</p>
-</blockquote>
-<p><strong>踩坑</strong>  执行hexo命令一定要在你<strong>初始化的文件夹</strong>下 执行hexo server命令 请一定要先安装hexo-server模块 hexo.3.0的启动服务模块是<strong>单独独立出来的</strong>   hexo初始化的文件夹请对比上文 保证不多不少</p>
-<p><strong>5</strong>.完成上面步骤  打开浏览器在地址栏输入<a href="http://localhost:4000即可本地访问静态博客页面。">http://localhost:4000即可本地访问静态博客页面。</a></p>
-<hr>
-<blockquote>
-<p>GitHub的申请注册和项目建立</p>
-</blockquote>
-<hr>
-<p><strong>1.</strong>  GitHub就安装官网的方式进行注册就好了 附上链接 <a target="_blank" rel="noopener" href="https://github.com/">GitHub</a><br><strong>2.<strong>注册完成后 点击头像旁边的+号按钮  选择 <strong>New repository</strong> 新建一个项目<br><strong>3.<strong>这里请注意 <strong>建立项目的名称 必须和你GitHub的昵称一致</strong>  比如我的Github名称是 jacklij 所以  我的名称就是jacklij.github.io  <strong>github.io的后缀也是必须的</strong>  这样Github才会为你默认开启github pages 你才能使用博客<br><strong>4.</strong> 所以 你新建项目的名称必然是   <strong>你的GitHub昵称.github.io</strong>  请确认这一点<br><strong>5.</strong> 剩下的不用管了  然后底下按钮直接建立  进入setting里面 找到github pages  上面的链接 就是你后面的博客链接  一般也就是上面注册的名称<br><strong>6.</strong> GitHub强制使用Https进行链接  所以你必须配置SSH公钥到github上 生成SSH秘钥 请百度Google<br><strong>7.</strong> 将id_rsa.pub 文件内容全部复制 打开方式可以选择文本打开  在你的github网页点击头像  最下面 设置(setting) 进去之后 选择</strong>SSH keys</strong> 新建一个 N</strong>ew SSH Key</strong> 将刚刚复制的公钥粘贴进去 保存<br><strong>8.</strong> 本地测试SSH是否配置成功 cmd输入ssh -T <a href="mailto:&#103;&#x69;&#x74;&#x40;&#103;&#x69;&#x74;&#x68;&#x75;&#x62;&#x2e;&#99;&#111;&#109;">&#103;&#x69;&#x74;&#x40;&#103;&#x69;&#x74;&#x68;&#x75;&#x62;&#x2e;&#99;&#111;&#109;</a> 进行验证  <strong>输入yes</strong> 按回车</p>
-<hr>
-<blockquote>
-<p>将Hexo静态网页提交到Github上</p>
-</blockquote>
-<hr>
-<p> **1.**修改站点配置文件_config.yml：<br>deploy:<br>  type: git<br>  repo: <a href="mailto:&#x67;&#105;&#x74;&#64;&#103;&#x69;&#116;&#x68;&#x75;&#x62;&#46;&#x63;&#111;&#109;">&#x67;&#105;&#x74;&#64;&#103;&#x69;&#116;&#x68;&#x75;&#x62;&#46;&#x63;&#111;&#109;</a>:你的GitHub昵称/你的GitHub昵称.github.io.git<br>  branch: master<br>**2.**安装Git部署插件：npm install hexo-deployer-git –save</p>
-<p>**3.**部署：</p>
-<p>hexo clean     # 清理本地静态文件；<br>hexo generate  # 生成静态页面，即public文件夹；<br>hexo deploy    # 部署到github<br>**4.**部署完毕，blog下的文件目录如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── .deploy_git  # （新增）hexo deploy 生成的git部署文件</span><br><span class="line">├── public       # （新增）hexo generate 生成的静态文件</span><br><span class="line">├── db.json      # （新增）hexo generate 生成的数据</span><br><span class="line">├── node_modules # 依赖模块，插件模块</span><br><span class="line">├── scaffolds    # 文章模板</span><br><span class="line">├── source       # 用户源文件：页面，文章markdown文件</span><br><span class="line">|   └── _posts   # 文章</span><br><span class="line">└── themes       # 主题</span><br><span class="line">├── .gitignore   # git时需忽略文件</span><br><span class="line">├── _config.yml  # 站点配置文件</span><br><span class="line">├── package.json # 应用程序的信息</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>站点搭建完毕，打开浏览器在地址栏输入以下链接可随时访问自己的博客了。</p>
-<p>github pages：<a target="_blank" rel="noopener" href="http://yourname.github.io/">http://yourname.github.io</a></p>
-<p>如果你本地调试没有问题 远端没有变化或乱码  请尝试 <strong>hexo clean -&gt; hexo g-&gt; hexo d</strong></p>
-<p>将在后面介绍                 <strong>Hexo主题Next的配置和使用</strong></p>
-<p>至此  你的博客就算搭建完毕了    如果你有任何疑问 欢迎联系<strong><a target="_blank" rel="noopener" href="http://www.lijin@foxmail.com/">www.lijin@foxmail.com</a></strong></p>
-<hr>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1139,7 +1309,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
